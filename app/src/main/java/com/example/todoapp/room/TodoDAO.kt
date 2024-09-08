@@ -10,7 +10,7 @@ import com.example.todoapp.data.entity.Todo
 @Dao
 interface TodoDAO {
 
-    @Query("SELECT * FROM todos")
+    @Query("SELECT * FROM todo")
     suspend fun getAllTodos(): List<Todo>
 
     @Insert
@@ -22,6 +22,6 @@ interface TodoDAO {
     @Delete
     suspend fun deleteTodo(todo: Todo)
 
-    @Query("SELECT * FROM todos WHERE name like '%'||:searchQuery||'%'")
+    @Query("SELECT * FROM todo WHERE todoName like '%'||:searchQuery||'%'")
     suspend fun searchTodo(searchQuery:String) : List<Todo>
 }
