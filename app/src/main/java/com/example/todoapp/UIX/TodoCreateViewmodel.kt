@@ -1,0 +1,18 @@
+package com.example.todoapp.UIX
+
+import androidx.lifecycle.ViewModel
+import com.example.todoapp.data.entity.Todo
+import com.example.todoapp.data.repository.TodoRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+class TodoCreateViewmodel @Inject constructor(val todoRepository: TodoRepository):ViewModel() {
+
+    fun createTodo(todoName:String){
+        CoroutineScope(Dispatchers.Main).launch{
+            todoRepository.create(todoName)
+        }
+    }
+}

@@ -7,12 +7,16 @@ import org.jetbrains.annotations.NotNull
 
 @Entity(tableName = "todo")
 data class Todo(
-    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "todoId")
+    @PrimaryKey(autoGenerate = true)
+    @NotNull
     var id:Int,
+
     @ColumnInfo(name = "todoName")
     @NotNull
     var name:String,
-    @ColumnInfo(name = "isDone")
-    var isDone:Boolean
+
+    @ColumnInfo(name = "isDone", defaultValue = "0")
+    @NotNull
+    var isDone:Int
 )

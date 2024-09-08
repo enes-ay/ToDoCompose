@@ -8,15 +8,15 @@ import kotlinx.coroutines.withContext
 class TodoDatasource(var todoDao: TodoDAO) {
 
     suspend fun createTodo(todoName: String){
-        val newTodo = Todo(0,todoName, false)
+        val newTodo = Todo(0,todoName, 0)
         todoDao.createTodo(newTodo)
     }
-    suspend fun updateTodo(todoId:Int, todoName: String, isDone:Boolean){
+    suspend fun updateTodo(todoId:Int, todoName: String, isDone:Int){
         val updatedTodo = Todo(todoId,todoName, isDone)
         todoDao.updateTodo(updatedTodo)
     }
     suspend fun deleteTodo(todoId: Int){
-        val deletedTodo = Todo(todoId,"",false)
+        val deletedTodo = Todo(todoId,"",0)
         todoDao.deleteTodo(deletedTodo)
     }
     suspend fun getAllTodos(): List<Todo> = withContext(Dispatchers.IO){

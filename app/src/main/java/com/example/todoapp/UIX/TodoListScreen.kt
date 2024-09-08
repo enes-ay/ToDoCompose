@@ -43,28 +43,30 @@ import com.example.todoapp.ui.theme.primaryColor
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TodoListScreen(navController: NavController) {
-    val todoListViewmodel : TodoListViewmodel = hiltViewModel()
+    val todoListViewmodel: TodoListViewmodel = hiltViewModel()
 
     val todoList = todoListViewmodel.todoList.observeAsState(listOf())
 
 
     LaunchedEffect(key1 = true) {
     }
-    Scaffold (
-        topBar = { CenterAlignedTopAppBar(title = { Text(text = "To Do List")})},
+    Scaffold(
+        topBar = { CenterAlignedTopAppBar(title = { Text(text = "To Do List") }) },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = { navController.navigate("creationScreen") },
                 content = {
-                    Icon(imageVector =Icons.Default.Add, contentDescription = "")
+                    Icon(imageVector = Icons.Default.Add, contentDescription = "")
                 }
             )
         }
     ) { paddingValues ->
 
-        LazyColumn(modifier = Modifier
-            .fillMaxSize()
-            .padding(paddingValues)) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
 //            items(todoList.count())
 //            {
 //             Column (modifier = Modifier
@@ -77,12 +79,12 @@ fun TodoListScreen(navController: NavController) {
         }
 
     }
-    
+
 }
 
 @Composable
 fun TodoItem(todo: Todo) {
-    Row(modifier= Modifier
+    Row(modifier = Modifier
         .fillMaxWidth()
         .height(60.dp)
         .background(primaryColor)
@@ -91,7 +93,14 @@ fun TodoItem(todo: Todo) {
         .padding(horizontal = 20.dp, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween) {
-        Text(text = "${todo.name}", fontSize = 21.sp, fontWeight = FontWeight.Bold, color = Color.White)
-        Checkbox(checked = todo.isDone, onCheckedChange = { todo.isDone = false} )
+        Text(
+            text = "${todo.name}",
+            fontSize = 21.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color.White
+        )
+        Checkbox(
+            checked = if (todo.isDone == 0) true else false,
+            onCheckedChange = { todo.isDone = 0 })
     }
 }

@@ -7,7 +7,7 @@ import com.example.todoapp.data.entity.Todo
 class TodoRepository (var todoDS: TodoDatasource){
     suspend fun create(todoName: String) = todoDS.createTodo(todoName)
 
-    suspend fun updateTodo(todoId: Int, todoName:String, isDone:Boolean) = todoDS.updateTodo(todoId, todoName, isDone)
+    suspend fun updateTodo(todoId: Int, todoName:String, isDone:Int) = todoDS.updateTodo(todoId, todoName, isDone)
 
     suspend fun deleteTodo(todoId: Int) = todoDS.deleteTodo(todoId)
 
