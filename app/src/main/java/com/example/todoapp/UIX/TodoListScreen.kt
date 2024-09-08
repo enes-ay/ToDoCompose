@@ -75,7 +75,9 @@ fun TodoListScreen(navController: NavController) {
                  .fillMaxSize()
                  .padding(vertical = 10.dp, horizontal = 10.dp)){
                  val item = todoList.value[it]
-                 TodoItem(todo = item)
+                 TodoItem(todo = item){
+                     navController.navigate("detailScreen/${item.id}")
+                 }
              }
             }
         }
@@ -85,12 +87,13 @@ fun TodoListScreen(navController: NavController) {
 }
 
 @Composable
-fun TodoItem(todo: Todo) {
+fun TodoItem(todo: Todo, onclick: (Int) -> Unit) {
     Row(modifier = Modifier
         .fillMaxWidth()
         .height(80.dp)
         .background(primaryColor)
         .clickable {
+            onclick(todo.id)
         }
         .padding(horizontal = 20.dp, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -102,7 +105,9 @@ fun TodoItem(todo: Todo) {
             fontWeight = FontWeight.Bold,
             color = Color.White
         )
-        Row (modifier = Modifier.fillMaxWidth().weight(1f), horizontalArrangement = Arrangement.End) {
+        Row (modifier = Modifier
+            .fillMaxWidth()
+            .weight(1f), horizontalArrangement = Arrangement.End) {
             Checkbox(
                 modifier = Modifier.padding(end = 14.dp),
                 checked = if (todo.isDone == 0) false else true,
