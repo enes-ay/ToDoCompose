@@ -13,6 +13,9 @@ interface TodoDAO {
     @Query("SELECT * FROM todo")
     suspend fun getAllTodos(): List<Todo>
 
+    @Query("SELECT * FROM todo WHERE todoId=:todoId")
+    suspend fun getTodo(todoId:Int): Todo
+
     @Insert
     suspend fun createTodo(todo: Todo)
 

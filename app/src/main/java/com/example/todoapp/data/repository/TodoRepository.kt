@@ -14,4 +14,6 @@ class TodoRepository (var todoDS: TodoDatasource){
     suspend fun getAllTodos() :List<Todo> = todoDS.getAllTodos()
 
     suspend fun searchTodo(searhQuery: String): List<Todo> = todoDS.searchTodo(searhQuery)
+
+    suspend fun getTodo(todoId: Int): Todo = todoDS.getTodo(todoId)
 }

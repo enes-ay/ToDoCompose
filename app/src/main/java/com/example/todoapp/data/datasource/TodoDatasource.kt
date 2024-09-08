@@ -22,7 +22,11 @@ class TodoDatasource(var todoDao: TodoDAO) {
     suspend fun getAllTodos(): List<Todo> = withContext(Dispatchers.IO){
         return@withContext todoDao.getAllTodos()
     }
+    suspend fun getTodo(todoId:Int): Todo = withContext(Dispatchers.IO){
+        return@withContext todoDao.getTodo(todoId)
+    }
     suspend fun searchTodo(searchQuery: String): List<Todo> = withContext(Dispatchers.IO){
         return@withContext todoDao.searchTodo(searchQuery)
     }
+
 }
