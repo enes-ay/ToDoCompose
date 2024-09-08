@@ -23,6 +23,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -33,34 +34,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.todoapp.R
 import com.example.todoapp.data.entity.Todo
+import com.example.todoapp.ui.theme.primaryColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TodoListScreen(navController: NavController) {
+    val todoListViewmodel : TodoListViewmodel = hiltViewModel()
 
-    val todoList = remember { mutableStateListOf<Todo>() }
-    val todoIsDone = remember { mutableStateListOf(false) }
+    val todoList = todoListViewmodel.todoList.observeAsState(listOf())
+
 
     LaunchedEffect(key1 = true) {
-        val todo1 = Todo(1,"232",false)
-        val todo2 = Todo(1,"sdg",false)
-        val todo3 = Todo(1,"2sdhsdh32",false)
-        val todo4 = Todo(1,"dsh",false)
-        val todo5 = Todo(1,"23dshsd2",false)
-        val todo6 = Todo(1,"dsgsh",false)
-        val todo7 = Todo(1,"232",false)
-        todoList.add(todo1)
-        todoList.add(todo2)
-        todoList.add(todo3)
-        todoList.add(todo4)
-        todoList.add(todo5)
-        todoList.add(todo6)
-        todoList.add(todo7)
-        todoList.add(todo7)
-        todoList.add(todo7)
     }
     Scaffold (
         topBar = { CenterAlignedTopAppBar(title = { Text(text = "To Do List")})},
@@ -77,15 +65,15 @@ fun TodoListScreen(navController: NavController) {
         LazyColumn(modifier = Modifier
             .fillMaxSize()
             .padding(paddingValues)) {
-            items(todoList.count())
-            {
-             Column (modifier = Modifier
-                 .fillMaxSize()
-                 .padding(vertical = 10.dp, horizontal = 10.dp)){
-                 val item = todoList[it]
-                 TodoItem(todo = item)
-             }
-            }
+//            items(todoList.count())
+//            {
+//             Column (modifier = Modifier
+//                 .fillMaxSize()
+//                 .padding(vertical = 10.dp, horizontal = 10.dp)){
+//                 val item = todoList[it]
+//                 TodoItem(todo = item)
+//             }
+//            }
         }
 
     }
@@ -97,7 +85,7 @@ fun TodoItem(todo: Todo) {
     Row(modifier= Modifier
         .fillMaxWidth()
         .height(60.dp)
-        .background(Color.Green)
+        .background(primaryColor)
         .clickable {
         }
         .padding(horizontal = 20.dp, vertical = 10.dp),
