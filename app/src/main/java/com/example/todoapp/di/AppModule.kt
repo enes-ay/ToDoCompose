@@ -32,9 +32,10 @@ class AppModule {
     @Provides
     @Singleton
     fun provideTodoDao(@ApplicationContext context: Context) : TodoDAO{
-        val db = Room.databaseBuilder(context, Database::class.java,"todo.sqlite")
-            .createFromFile("todo.sqlite").build()
+        val db = Room.databaseBuilder(context, com.example.todoapp.room.Database::class.java,"todo.sqlite")
+            .createFromAsset("todo.sqlite").build()
 
         return db.getTodoDao()
+
     }
 }
