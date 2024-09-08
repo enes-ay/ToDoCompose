@@ -9,10 +9,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -25,19 +28,25 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.todoapp.R
 import com.example.todoapp.UIX.viewmodel.TodoListViewmodel
 import com.example.todoapp.data.entity.Todo
 import com.example.todoapp.ui.theme.primaryColor
@@ -50,12 +59,54 @@ fun TodoListScreen(navController: NavController) {
     val todoList = todoListViewmodel.todoList.observeAsState(listOf())
     val snacBarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
+    val isSearching = remember { mutableStateOf(false) }
+    val tf = remember { mutableStateOf("") }
 
     LaunchedEffect(key1 = true) {
         todoListViewmodel.getAllTodos()
     }
     Scaffold(
-        topBar = { CenterAlignedTopAppBar(title = { Text(text = "To Do List") }) },
+        topBar = { TopAppBar(
+            title = {
+                if (isSearching.value)
+                {
+                    TextField(value = tf.value,
+                        onValueChange = {tf.value = it
+                            todoListViewmodel.searchTodo(it)},
+                        label = { Text(text = "Search")},
+                        colors = TextFieldDefaults.textFieldColors(
+                            containerColor = Color.Transparent,
+                            focusedLabelColor = Color.White,
+                            focusedIndicatorColor = Color.White,
+                            unfocusedLabelColor = Color.White
+                        )
+                    )
+                }
+                else {
+                    Text(text = "Contacts")}
+            },
+            actions = {
+                if (isSearching.value){
+                    IconButton(onClick = { isSearching.value = false
+                        tf.value =""
+                    }) {
+                        Icon(modifier = Modifier.size(20.dp),
+                            imageVector = Icons.Default.Close
+                            ,contentDescription = "search icon" )
+                    }
+                }
+                else{
+                    IconButton(onClick = {
+                        isSearching.value = true
+                    }) {
+                        Icon(modifier = Modifier.size(20.dp),
+                            imageVector = Icons.Default.Search
+                            ,contentDescription = "search icon" )
+                    }
+                }
+            }
+        )
+        },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = { navController.navigate("creationScreen") },
