@@ -3,19 +3,38 @@ package com.example.todoapp.UIX
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.todoapp.data.entity.Todo
+import com.example.todoapp.data.repository.TodoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
-class TodoListViewmodel:ViewModel() {
+class TodoListViewmodel @Inject constructor(var todoRepository: TodoRepository):ViewModel() {
 
     val todoList = MutableLiveData<List<Todo>>()
 
-    fun getAllTodo(){
-
+    init {
+        getAllTodos()
     }
 
-    fun getSingleTodo(){
+    fun getAllTodos(){
+        CoroutineScope(Dispatchers.Main).launch {
+           todoList.value = todoRepository.getAllTodos()
+        }
+    }
 
+    fun deleteTodo(todoId: Int){
+        CoroutineScope(Dispatchers.Main).launch {
+            todoRepository.deleteTodo(todoId)
+        }
+    }
+
+    fun searchTodo(searchQuery: String){
+        CoroutineScope(Dispatchers.Main).launch{
+            todoList.value = todoRepository.searchTodo(searchQuery)
+        }
     }
 
 }
