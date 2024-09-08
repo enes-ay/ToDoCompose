@@ -1,4 +1,4 @@
-package com.example.todoapp.UIX
+package com.example.todoapp.UIX.view
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.todoapp.UIX.viewmodel.TodoCreateViewmodel
 
 @Composable
 fun  TodoCreateScreen (navController: NavController) {

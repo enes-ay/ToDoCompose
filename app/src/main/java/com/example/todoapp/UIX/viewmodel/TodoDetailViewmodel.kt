@@ -1,7 +1,5 @@
-package com.example.todoapp.UIX
+package com.example.todoapp.UIX.viewmodel
 
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.todoapp.data.entity.Todo

@@ -1,7 +1,6 @@
-package com.example.todoapp.UIX
+package com.example.todoapp.UIX.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.todoapp.data.entity.Todo
 import com.example.todoapp.data.repository.TodoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope

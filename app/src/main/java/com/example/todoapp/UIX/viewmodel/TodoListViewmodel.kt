@@ -1,4 +1,4 @@
-package com.example.todoapp.UIX
+package com.example.todoapp.UIX.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -28,6 +28,7 @@ class TodoListViewmodel @Inject constructor(var todoRepository: TodoRepository):
     fun deleteTodo(todoId: Int){
         CoroutineScope(Dispatchers.Main).launch {
             todoRepository.deleteTodo(todoId)
+            getAllTodos()
         }
     }
 
