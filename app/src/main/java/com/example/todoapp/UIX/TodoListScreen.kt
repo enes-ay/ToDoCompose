@@ -14,11 +14,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -47,8 +49,8 @@ fun TodoListScreen(navController: NavController) {
 
     val todoList = todoListViewmodel.todoList.observeAsState(listOf())
 
-
     LaunchedEffect(key1 = true) {
+        todoListViewmodel.getAllTodos()
     }
     Scaffold(
         topBar = { CenterAlignedTopAppBar(title = { Text(text = "To Do List") }) },
@@ -67,15 +69,15 @@ fun TodoListScreen(navController: NavController) {
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-//            items(todoList.count())
-//            {
-//             Column (modifier = Modifier
-//                 .fillMaxSize()
-//                 .padding(vertical = 10.dp, horizontal = 10.dp)){
-//                 val item = todoList[it]
-//                 TodoItem(todo = item)
-//             }
-//            }
+            items(todoList.value.count())
+            {
+             Column (modifier = Modifier
+                 .fillMaxSize()
+                 .padding(vertical = 10.dp, horizontal = 10.dp)){
+                 val item = todoList.value[it]
+                 TodoItem(todo = item)
+             }
+            }
         }
 
     }
@@ -86,7 +88,7 @@ fun TodoListScreen(navController: NavController) {
 fun TodoItem(todo: Todo) {
     Row(modifier = Modifier
         .fillMaxWidth()
-        .height(60.dp)
+        .height(80.dp)
         .background(primaryColor)
         .clickable {
         }
@@ -94,13 +96,21 @@ fun TodoItem(todo: Todo) {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween) {
         Text(
-            text = "${todo.name}",
+            modifier = Modifier.weight(3f),
+            text = todo.name,
             fontSize = 21.sp,
             fontWeight = FontWeight.Bold,
             color = Color.White
         )
-        Checkbox(
-            checked = if (todo.isDone == 0) true else false,
-            onCheckedChange = { todo.isDone = 0 })
+        Row (modifier = Modifier.fillMaxWidth().weight(1f), horizontalArrangement = Arrangement.End) {
+            Checkbox(
+                modifier = Modifier.padding(end = 14.dp),
+                checked = if (todo.isDone == 0) false else true,
+                onCheckedChange = { todo.isDone = 0 })
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(imageVector = Icons.Default.Delete, contentDescription = "")
+            }
+        }
+
     }
 }

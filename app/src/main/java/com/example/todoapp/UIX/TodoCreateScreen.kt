@@ -20,28 +20,33 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 
 @Composable
 fun  TodoCreateScreen (navController: NavController) {
     var todoName by remember { mutableStateOf("") }
+    val todoCreateViewmodel : TodoCreateViewmodel = hiltViewModel()
 
     Scaffold (modifier = Modifier.fillMaxSize()
     ) { paddingValues ->
 
-            Column (modifier = Modifier.fillMaxSize().padding(paddingValues),
+            Column (modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues),
                 verticalArrangement = Arrangement.Center){
                 Column (modifier = Modifier
-                    .fillMaxWidth().height(400.dp)
+                    .fillMaxWidth()
+                    .height(400.dp)
                     .padding(10.dp),
                     verticalArrangement = Arrangement.SpaceEvenly,
                     horizontalAlignment =Alignment.CenterHorizontally) {
                     TextField(value = todoName, onValueChange = {todoName = it})
-                    Button(onClick = { /*TODO*/ }) {
+                    Button(onClick = {
+                        todoCreateViewmodel.createTodo(todoName)
+                    }) {
                         Text(text = "Save")
                     }
-
-
                 }
             }
     }
