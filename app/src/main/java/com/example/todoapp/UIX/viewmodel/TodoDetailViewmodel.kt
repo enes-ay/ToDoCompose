@@ -20,4 +20,11 @@ class TodoDetailViewmodel  @Inject constructor(var todoRepository: TodoRepositor
             todoDetail.value= todoRepository.getTodo(todoId)
         }
     }
+    fun updateTodo(todo : Todo?){
+        CoroutineScope(Dispatchers.Main).launch {
+            if(todo!=null){
+                todoRepository.updateTodo(todo.id,todo.name,todo.isDone)
+            }
+        }
+    }
 }
