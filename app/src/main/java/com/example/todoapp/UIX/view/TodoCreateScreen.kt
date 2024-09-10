@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -22,12 +24,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.todoapp.UIX.viewmodel.TodoCreateViewmodel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun  TodoCreateScreen (navController: NavController) {
     var todoName by remember { mutableStateOf("") }
     val todoCreateViewmodel : TodoCreateViewmodel = hiltViewModel()
 
-    Scaffold (modifier = Modifier.fillMaxSize()
+    Scaffold (modifier = Modifier.fillMaxSize(),
+        topBar = { CenterAlignedTopAppBar(title = { Text("Add new Todo") })}
     ) { paddingValues ->
 
             Column (modifier = Modifier
