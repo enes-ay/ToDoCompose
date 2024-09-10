@@ -38,4 +38,11 @@ class TodoListViewmodel @Inject constructor(var todoRepository: TodoRepository):
         }
     }
 
+    fun updateDoneStatus(todo:Todo){
+        CoroutineScope(Dispatchers.Main).launch {
+            todoRepository.updateTodo(todo.id, todo.name, todo.isDone)
+            getAllTodos()
+        }
+    }
+
 }

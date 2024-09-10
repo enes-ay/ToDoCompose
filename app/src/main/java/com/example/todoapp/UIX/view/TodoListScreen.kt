@@ -66,46 +66,53 @@ fun TodoListScreen(navController: NavController) {
         todoListViewmodel.getAllTodos()
     }
     Scaffold(
-        topBar = { TopAppBar(
-            title = {
-                if (isSearching.value)
-                {
-                    TextField(value = tf.value,
-                        onValueChange = {tf.value = it
-                            todoListViewmodel.searchTodo(it)},
-                        label = { Text(text = "Search")},
-                        colors = TextFieldDefaults.textFieldColors(
-                            containerColor = Color.Transparent,
-                            focusedLabelColor = Color.White,
-                            focusedIndicatorColor = Color.White,
-                            unfocusedLabelColor = Color.White
+        topBar = {
+            TopAppBar(
+                title = {
+                    if (isSearching.value) {
+                        TextField(
+                            value = tf.value,
+                            onValueChange = {
+                                tf.value = it
+                                todoListViewmodel.searchTodo(it)
+                            },
+                            label = { Text(text = "Search") },
+                            colors = TextFieldDefaults.textFieldColors(
+                                containerColor = Color.Transparent,
+                                focusedLabelColor = Color.White,
+                                focusedIndicatorColor = Color.White,
+                                unfocusedLabelColor = Color.White
+                            )
                         )
-                    )
-                }
-                else {
-                    Text(text = "Contacts")}
-            },
-            actions = {
-                if (isSearching.value){
-                    IconButton(onClick = { isSearching.value = false
-                        tf.value =""
-                    }) {
-                        Icon(modifier = Modifier.size(20.dp),
-                            imageVector = Icons.Default.Close
-                            ,contentDescription = "search icon" )
+                    } else {
+                        Text(text = "Todos")
+                    }
+                },
+                actions = {
+                    if (isSearching.value) {
+                        IconButton(onClick = {
+                            isSearching.value = false
+                            tf.value = ""
+                        }) {
+                            Icon(
+                                modifier = Modifier.size(20.dp),
+                                imageVector = Icons.Default.Close,
+                                contentDescription = "search icon"
+                            )
+                        }
+                    } else {
+                        IconButton(onClick = {
+                            isSearching.value = true
+                        }) {
+                            Icon(
+                                modifier = Modifier.size(20.dp),
+                                imageVector = Icons.Default.Search,
+                                contentDescription = "search icon"
+                            )
+                        }
                     }
                 }
-                else{
-                    IconButton(onClick = {
-                        isSearching.value = true
-                    }) {
-                        Icon(modifier = Modifier.size(20.dp),
-                            imageVector = Icons.Default.Search
-                            ,contentDescription = "search icon" )
-                    }
-                }
-            }
-        )
+            )
         },
         floatingActionButton = {
             FloatingActionButton(
@@ -125,28 +132,35 @@ fun TodoListScreen(navController: NavController) {
         ) {
             items(todoList.value.count())
             {
-             Column (modifier = Modifier
-                 .fillMaxSize()
-                 .padding(vertical = 10.dp, horizontal = 10.dp)){
-                 val item = todoList.value[it]
-                 TodoItem(todo = item,
-                     delete = {
-                         scope.launch {
-                             val sb = snacBarHostState.showSnackbar(
-                                 message = "Are you sure to delete this todo?",
-                                 actionLabel = "Yes",
-                                 withDismissAction = true,
-                                 duration = SnackbarDuration.Short,
-                             )
-                             if (sb == SnackbarResult.ActionPerformed){
-                                 todoListViewmodel.deleteTodo(item.id)
-                             }
-                         }
-                              },
-                     onclick = { navController.navigate("detailScreen/${item.id}")
-                 })
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(vertical = 10.dp, horizontal = 10.dp)
+                ) {
+                    val item = todoList.value[it]
+                    TodoItem(todo = item,
+                        delete = {
+                            scope.launch {
+                                val sb = snacBarHostState.showSnackbar(
+                                    message = "Are you sure to delete this todo?",
+                                    actionLabel = "Yes",
+                                    withDismissAction = true,
+                                    duration = SnackbarDuration.Short,
+                                )
+                                if (sb == SnackbarResult.ActionPerformed) {
+                                    todoListViewmodel.deleteTodo(item.id)
+                                }
+                            }
+                        },
+                        onclick = {
+                            navController.navigate("detailScreen/${item.id}")
+                        },
+                        onCheckedChange = { updatedTodo->
+                            todoListViewmodel.updateDoneStatus(updatedTodo)
+                        }
+                        )
 
-             }
+                }
             }
         }
 
@@ -155,7 +169,7 @@ fun TodoListScreen(navController: NavController) {
 }
 
 @Composable
-fun TodoItem(todo: Todo, onclick: (Int) -> Unit, delete: (todoId:Int) -> Unit) {
+fun TodoItem(todo: Todo, onclick: (Int) -> Unit, delete: (todoId: Int) -> Unit,  onCheckedChange: (todo: Todo) -> Unit) {
     Row(modifier = Modifier
         .fillMaxWidth()
         .height(80.dp)
@@ -173,13 +187,20 @@ fun TodoItem(todo: Todo, onclick: (Int) -> Unit, delete: (todoId:Int) -> Unit) {
             fontWeight = FontWeight.Bold,
             color = Color.White
         )
-        Row (modifier = Modifier
-            .fillMaxWidth()
-            .weight(1f), horizontalArrangement = Arrangement.End) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f), horizontalArrangement = Arrangement.End
+        ) {
             Checkbox(
                 modifier = Modifier.padding(end = 14.dp),
-                checked = if (todo.isDone == 0) false else true,
-                onCheckedChange = { todo.isDone = todo.isDone })
+                checked = todo.isDone == 1,
+                onCheckedChange = { isChecked ->
+                    val updatedTodo = todo.copy(isDone = if (isChecked) 1 else 0)
+                    onCheckedChange(updatedTodo)
+                }
+            )
+
             IconButton(onClick = {
                 delete(todo.id)
             }) {
